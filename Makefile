@@ -1,11 +1,11 @@
 .PHONY: build
 
 build:
-	docker build -t recap/process-lofar-adaptor .
+	docker build -t micro-infrastructure/adaptor-lofar-stage .
 
 run: build
-	docker run -dt --rm -P recap/process-lofar-adaptor
+	docker run -dt --rm -P micro-infrastructure/adaptor-lofar-stage
 
 push: build
-	docker push recap/process-lofar-adaptor
+	docker push micro-infrastructure/adaptor-lofar-stage
 
