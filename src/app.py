@@ -72,9 +72,11 @@ def stage():
 
 ### Main
 
+PORT = environ.get('PORT', 5000)
+
 if __name__ == '__main__':
     if amqp_host != '':
         # Listen for AMQP messages in the background
         Thread(target=channel.start_consuming).start()
 
-    app.run(host='0.0.0.0', threaded=True)
+    app.run(host='0.0.0.0', port=PORT, threaded=True)
