@@ -1,14 +1,17 @@
 from background import StagingMonitor
 from helpers import get_ltaproxy, get_surls, json_respone
+from os import getenv
 
+LOFAR_USERNAME = getenv('LOFAR_USERNAME', default=None)
+LOFAR_PASSWORD = getenv('LOFAR_PASSWORD', default=None)
 
 def status_entrypoint(payload):
     command = payload['cmd']
 
     # Extract payload
     request_id = command['requestId']
-    username = command['credentials']['lofarUsername']
-    password = command['credentials']['lofarPassword']
+    username = command['credentials'].get('lofarUsername', LOFAR_USERNAME)
+    password = command['credentials'].get('lofarPassword', LOFAR_PASSWORD)
 
     # Get status
     result = get_staging_status(username, password, str(request_id))
@@ -34,8 +37,8 @@ def stage_entrypoint(payload):
     webhook = payload.get('webhook', None)
 
     # Extract payload
-    username = command['credentials']['lofarUsername']
-    password = command['credentials']['lofarPassword']
+    username = command['credentials'].get('lofarUsername', LOFAR_USERNAME)
+    password = command['credentials'].get('lofarPassword', LOFAR_PASSWORD)
     target_id = command['src'].get('id')
     target_paths = command['src'].get('paths')
 
