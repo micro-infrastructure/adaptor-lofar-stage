@@ -56,6 +56,8 @@ def new_staging_request(username, password, target, webhook):
         elif type(target) is list:
             surls = target
     except:
+        logger.exception("Could not find data products.")
+
         message = 'Could not find data products: credentials not valid? unsupported observation type?'
         return {'message': message}
 
