@@ -1,6 +1,7 @@
 from background import StagingMonitor
 from helpers import get_ltaproxy, get_surls, json_respone
 from os import getenv
+from loguru import logger
 
 LOFAR_USERNAME = getenv('LOFAR_USERNAME', default=None)
 LOFAR_PASSWORD = getenv('LOFAR_PASSWORD', default=None)
@@ -51,10 +52,10 @@ def stage_entrypoint(payload):
 
 def new_staging_request(username, password, target, webhook):
     try:
-        if type(target) is int or target.isdigit():
-            surls = get_surls(int(target), username, password)
-        elif type(target) is list:
+        if type(target) is list:
             surls = target
+        elif type(target) is int or target.isdigit():
+            surls = get_surls(int(target), username, password)
     except:
         logger.exception("Could not find data products.")
 
