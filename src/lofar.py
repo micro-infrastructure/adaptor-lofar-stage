@@ -8,11 +8,12 @@ LOFAR_PASSWORD = getenv('LOFAR_PASSWORD', default=None)
 
 def status_entrypoint(payload):
     command = payload['cmd']
+    credentials = command.get('credentials', {})
 
     # Extract payload
     request_id = command['requestId']
-    username = command['credentials'].get('lofarUsername', LOFAR_USERNAME)
-    password = command['credentials'].get('lofarPassword', LOFAR_PASSWORD)
+    username = credentials.get('lofarUsername', LOFAR_USERNAME)
+    password = credentials.get('lofarPassword', LOFAR_PASSWORD)
 
     # Get status
     result = get_staging_status(username, password, str(request_id))
@@ -35,11 +36,12 @@ def get_staging_status(username, password, request_id):
 
 def stage_entrypoint(payload):
     command = payload['cmd']
+    credentials = command.get('credentials', {})
     webhook = payload.get('webhook', None)
 
     # Extract payload
-    username = command['credentials'].get('lofarUsername', LOFAR_USERNAME)
-    password = command['credentials'].get('lofarPassword', LOFAR_PASSWORD)
+    username = credentials.get('lofarUsername', LOFAR_USERNAME)
+    password = credentials.get('lofarPassword', LOFAR_PASSWORD)
     target_id = command['src'].get('id')
     target_paths = command['src'].get('paths')
 
